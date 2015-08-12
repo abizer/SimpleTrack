@@ -2,7 +2,7 @@ from flask import Flask, request, g, render_template, jsonify
 from datetime import date
 import sqlite3
 
-DATABASE = 'simpletrack.db'
+DATABASE = 'SimpleTrack/simpletrack.db'
 DEBUG = True
 
 app = Flask(__name__)

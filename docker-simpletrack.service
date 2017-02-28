@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker container for SimpleTrack
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=on-failure
+User=abizer
+Group=www-data
+ExecStart=/usr/bin/docker start -a simpletrack
+ExecStop=/usr/bin/docker stop -t 2 simpletrack
+
+[Install]
+WantedBy=multi-user.target

@@ -66,9 +66,9 @@ def index():
 def add_issue():
     if request.form['description']:
         insert_issue(request.form['description'])
-        return ''  # otherwise flask complains
+        return jsonify(issue=request.form['description'], message="Added Issue")
     else:
-        return ''
+        return jsonify(issue=request.form['description'], message="Adding Issue Failed")
 
 
 # false sense of security in only allowing POST

@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker container for todo.abizer.me SimpleTrack instance
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=on-failure
+User=abizer
+Group=www-data
+ExecStart=/usr/bin/docker start -a todo-simpletrack
+ExecStop=/usr/bin/docker stop -t 2 todo-simpletrack
+
+[Install]
+WantedBy=multi-user.target

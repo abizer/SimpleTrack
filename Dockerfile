@@ -6,8 +6,8 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 
 COPY simpletrack.py /app
-COPY static /app/static
-COPY templates /app/templates
+COPY static/ /app/static/
+COPY templates/ /app/templates/
 
 RUN mkdir /app/socket
 

@@ -53,14 +53,15 @@
           {% for issue in issues %}
           <tr data-rowid="{{ issue.rowid }}" class='{{ cssmap[issue.status] }}'>
             <td class='col-sm-1'>{{ issue.rowid }}</td>
-            <td class='col-sm-1'>{{ issue.date }}</td>
-            <td class='col-sm-7 description'>{{ issue.description }}</td>
-            <td class='col-sm-3'> 
+            <td class='col-sm-2'>{{ issue.date }}</td>
+            <td class='col-sm-5 description'>{{ issue.description }}</td>
+            <td class='col-sm-4'> 
               
               <div class='btn-group btn-group-sm' role='group' aria-label='...'>
-                <button type='button' class='btn btn-danger' onclick="issue_open({{ issue.rowid }})">Open</button>
-                <button type='button' class='btn btn-warning' onclick="issue_pending({{ issue.rowid }})">Pending</button>
+                <button type='button' class='btn btn-warning' onclick="issue_open({{ issue.rowid }})">Open</button>
+                <button type='button' class='btn btn-info' onclick="issue_pending({{ issue.rowid }})">Pending</button>
                 <button type='button' class='btn btn-success' onclick="issue_resolved({{ issue.rowid }})">Resolved</button>
+		<button type='button' class='btn btn-danger' onclick="issue_rejected({{ issue.rowid }})">Rejected</button>
               </div>
                
                 <button type='button' class='btn btn-default' onclick="delete_issue({{ issue.rowid }})">Delete</button>

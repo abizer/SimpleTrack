@@ -26,7 +26,7 @@ function issue_open(rowid)
     '/open/' + rowid
   ).done(function(data) {
     $('.alert_field').text(data.message);
-    $('tr[data-rowid=' + rowid + ']').removeClass('bg-warning bg-success').addClass('bg-danger');
+    $('tr[data-rowid=' + rowid + ']').removeClass('bg-danger bg-success bg-info').addClass('bg-warning');
   });
 }
 
@@ -36,7 +36,7 @@ function issue_pending(rowid)
     '/pending/' + rowid
   ).done(function(data) {
     $('.alert_field').text(data.message);
-    $('tr[data-rowid=' + rowid + ']').removeClass('bg-danger bg-success').addClass('bg-warning');
+    $('tr[data-rowid=' + rowid + ']').removeClass('bg-danger bg-success bg-warning').addClass('bg-info');
   });
 }
 
@@ -46,8 +46,18 @@ function issue_resolved(rowid)
     '/resolved/' + rowid
   ).done(function(data) {
     $('.alert_field').text(data.message);
-    $('tr[data-rowid=' + rowid + ']').removeClass('bg-danger bg-warning').addClass('bg-success');
+    $('tr[data-rowid=' + rowid + ']').removeClass('bg-danger bg-warning bg-info').addClass('bg-success');
   });
+}
+
+function issue_rejected(rowid)
+{
+    $.post(
+	'/rejected/' + rowid
+    ).done(function(data) {
+	$('.alert_field').text(data.message);
+	$('tr[data-rowid=' + rowid + ']').removeClass('bg-warning bg-info bg-success').addClass('bg-danger');
+    });
 }
 
 // function update_issue(rowid, status)

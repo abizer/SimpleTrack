@@ -17,7 +17,8 @@ def connect_db():
 
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    if not hasattr(g, 'db'):
+        g.db = connect_db()
 
 
 @app.teardown_request
@@ -29,9 +30,11 @@ def teardown_request(exception):
 # -----------------------
 
 
-def get_issues():
-    issues = g.db.execute('SELECT ROWID, * FROM issues ORDER BY ROWID DESC')
-    return issues
+def get_issue(limit = None):
+    stmt = "SELECT ROWID, * FROM issues ORDER BY ROWID DESC"
+    if limit:
+        stmt += " LIMIT {}".format(limit)
+    return g.db.execute(stmt)
 
 
 def insert_issue(description):
@@ -54,12 +57,11 @@ def delete_issue(rowid):
 
 # ----------------------
 
-
 @app.route('/')
 def index():
-    cssmap = {'open': 'bg-danger', 'pending': 'bg-warning',
-              'resolved': 'bg-success'}  # don't like this
-    return render_template('base.html', issues=get_issues(), cssmap=cssmap)
+    cssmap = {'open': 'bg-warning', 'pending': 'bg-info',
+              'resolved': 'bg-success', 'rejected': 'bg-danger'}
+    return render_template('base.html', issues=get_issue(None), cssmap=cssmap)
 
 
 @app.route('/add', methods=['POST'])
@@ -68,7 +70,7 @@ def add_issue():
         insert_issue(request.form['description'])
         return jsonify(issue=request.form['description'], message="Added Issue")
     else:
-        return jsonify(issue=request.form['description'], message="Adding Issue Failed")
+        return jsonify(message="Adding Issue Failed")
 
 
 # false sense of security in only allowing POST
@@ -82,6 +84,11 @@ def change_status(rowid, status):
 def remove_issue(rowid):
     delete_issue(rowid)
     return jsonify(message="Issue #{0} deleted.".format(rowid))
+
+@app.route('/get/<int:limit>', methods=['GET'])
+def get_issues(limit):
+    # sqlite doesn't support slices?
+    return jsonify((i[1],i[3]) for i in get_issue(limit))
 
 if __name__ == '__main__':
     app.run()
